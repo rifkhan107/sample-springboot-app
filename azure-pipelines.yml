@@ -35,7 +35,7 @@ steps:
   inputs:
     sshEndpoint: 'nginx-dev-con'
     sourceFolder: '$(Agent.BuildDirectory)'
-    contents: '**'
+    contents: '**/*.jar'
     targetFolder: '/opt/tomcat/webapps/'
     readyTimeout: '20000'
 - task: SSH@0
