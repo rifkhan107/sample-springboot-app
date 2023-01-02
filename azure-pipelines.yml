@@ -10,27 +10,29 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: Maven@3
+- task: Maven@4
   inputs:
     mavenPomFile: 'pom.xml'
-    goals: 'package'
-    
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    javaHomeOption: 'JDKVersion'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
+
+- task: CopyFilesOverSSH@0
+  inputs:
+    sshEndpoint: 'nginx-dev-con'
+    sourceFolder: '$(Agent.BuildDirectory'
+    contents: '**/*.war'
+    targetFolder: '/var/www/html/'
+    readyTimeout: '20000'
+    flattenFolders: true
 
 - task: Bash@3
   inputs:
     targetType: 'inline'
     script: |
-      sudo apt-get update
-      sudo apt-get install nginx -y
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: |
-      sudo cp target/spring-boot-log4j2-sample-0.0.1-SNAPSHOT.jar /var/www/html/
-
-
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: |
+      sudo service nginx stop
       sudo service nginx start
