@@ -28,6 +28,7 @@ steps:
     contents: '**/*.jar'
     targetFolder: '/opt/'
     readyTimeout: '20000'
+    flattenFolders: true
     
 
 - task: Bash@3
