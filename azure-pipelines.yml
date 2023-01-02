@@ -20,20 +20,5 @@ steps:
     mavenAuthenticateFeed: false
     effectivePomSkip: false
     sonarQubeRunAnalysis: false
+    goals: 'package'
 
-- task: CopyFilesOverSSH@0
-  inputs:
-    sshEndpoint: 'nginx-dev-con'
-    sourceFolder: '$(Agent.BuildDirectory)'
-    contents: '**/*.jar'
-    targetFolder: '/opt/'
-    readyTimeout: '20000'
-    flattenFolders: true
-    
-
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: |
-      sudo systemctl stop nginx
-      sudo systemctl start nginx
