@@ -30,7 +30,7 @@ jobs:
   steps:
   - task: AzureCLI@2
     inputs:
-      azureSubscription: '240696f4-b8aa-4704-8bed-ba13ebb423e2' # Replace with your Azure subscription
+      azureSubscription: 'Azure for Students' # Replace with your Azure subscription
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |
@@ -53,7 +53,7 @@ jobs:
       OverWrite: true
   - task: AzureCLI@2
     inputs:
-      azureSubscription: '240696f4-b8aa-4704-8bed-ba13ebb423e2' # Replace with your Azure subscription
+      azureSubscription: 'Azure for Students' # Replace with your Azure subscription
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |
