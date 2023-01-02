@@ -22,3 +22,19 @@ steps:
     sonarQubeRunAnalysis: false
     goals: 'package'
 
+- task: CopyFilesOverSSH@0
+  inputs:
+    sshEndpoint: 'nginx-dev-con'
+    sourceFolder: '$(Agent.BuildDirectory)'
+    contents: '**/*.jar'
+    targetFolder: '/opt/tomcat/webapps/'
+    readyTimeout: '20000'
+    flattenFolders: true
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'nginx-dev-con'
+    runOptions: 'commands'
+    commands: |
+      /opt/tomcat/bin/shutdown.sh
+      /opt/tomcat/bin/startup.sh
+    readyTimeout: '20000'
