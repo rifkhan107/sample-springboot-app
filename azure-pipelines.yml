@@ -34,5 +34,5 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      sudo service nginx stop
-      sudo service nginx start
+      sudo systemctl stop nginx
+      sudo systemctl start nginx
