@@ -24,7 +24,7 @@ steps:
 - task: CopyFilesOverSSH@0
   inputs:
     sshEndpoint: 'nginx-dev-con'
-    sourceFolder: '$(Agent.BuildDirectory'
+    sourceFolder: '$(Agent.BuildDirectory)'
     contents: '**/*.war'
     targetFolder: '/var/www/html/'
     readyTimeout: '20000'
