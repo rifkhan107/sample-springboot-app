@@ -28,7 +28,7 @@ steps:
     contents: '**/*.jar'
     targetFolder: '/var/www/html/'
     readyTimeout: '20000'
-    flattenFolders: true
+    
 
 - task: Bash@3
   inputs:
