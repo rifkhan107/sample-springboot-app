@@ -1,0 +1,63 @@
+# Pipeline to build and deploy a java application with Nginx on Ubuntu virtual machine
+
+# Define variables for the pipeline
+variables:
+  vmName: 'my-ubuntu' # Replace with your virtual machine name
+  javaApp: 'myJavaApp' # Replace with the name of your java application
+
+# Trigger the pipeline on code changes in the repository
+trigger:
+  branches:
+    include:
+    - master
+
+# Build the java application
+jobs:
+- job: Build
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - task: Maven@3
+    inputs:
+      mavenPomFile: 'pom.xml'
+      goals: 'package'
+
+# Install Nginx on the virtual machine
+- job: InstallNginx
+  dependsOn: Build
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: '240696f4-b8aa-4704-8bed-ba13ebb423e2' # Replace with your Azure subscription
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        # Update the package manager
+        sudo apt-get update
+        # Install Nginx
+        sudo apt-get install -y nginx
+
+# Deploy the java application to the virtual machine
+- job: Deploy
+  dependsOn: InstallNginx
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: '$(System.DefaultWorkingDirectory)/target'
+      Contents: '*.jar'
+      TargetFolder: '/var/www/$(javaApp)'
+      OverWrite: true
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: '240696f4-b8aa-4704-8bed-ba13ebb423e2' # Replace with your Azure subscription
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        # Set permissions for the java application
+        sudo chmod 777 /var/www/$(javaApp)/*.jar
+        # Restart Nginx
+        sudo service nginx restart
