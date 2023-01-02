@@ -25,7 +25,7 @@ steps:
   inputs:
     sshEndpoint: 'nginx-dev-con'
     sourceFolder: '$(Agent.BuildDirectory)'
-    contents: '**/*.war'
+    contents: '**/*.jar'
     targetFolder: '/var/www/html/'
     readyTimeout: '20000'
     flattenFolders: true
