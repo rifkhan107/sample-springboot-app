@@ -22,18 +22,27 @@ steps:
     sonarQubeRunAnalysis: false
     goals: 'package'
 
-- task: Bash@3
+# - task: Bash@3
+#   inputs:
+#     targetType: 'inline'
+#     script: |
+#       # Copy the deployable package to the nginx server
+#         scp target/*.jar azureuserr@104.208.69.86:/var/www/html
+      
+#       # # Install any necessary dependencies on the nginx server
+#       # ssh user@server "apt-get install -y openjdk-11-jdk"
+      
+#       # # Restart the nginx server
+#       # ssh user@server "systemctl restart nginx"
+
+- task: CopyFilesOverSSH@0
   inputs:
-    targetType: 'inline'
-    script: |
-      # Copy the deployable package to the nginx server
-        scp target/*.jar azureuserr@104.208.69.86:/var/www/html
-      
-      # # Install any necessary dependencies on the nginx server
-      # ssh user@server "apt-get install -y openjdk-11-jdk"
-      
-      # # Restart the nginx server
-      # ssh user@server "systemctl restart nginx"
+    sshEndpoint: 'dev-tv-web-admin'
+    sourceFolder: '$(Agent.BuildDirectory)'
+    contents: '**/*.jar'
+    targetFolder: '/var/www/html'
+    readyTimeout: '20000'
+    flattenFolders: true
 
 - task: SSH@0
   inputs:
