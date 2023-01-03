@@ -24,7 +24,7 @@ steps:
 
 - task: CopyFilesOverSSH@0
   inputs:
-    sshEndpoint: 'nginx-dev-con'
+    sshEndpoint: 'dev-tv-web-admin'
     sourceFolder: '$(Agent.BuildDirectory)'
     contents: '**/*.jar'
     targetFolder: '/var/www/html'
