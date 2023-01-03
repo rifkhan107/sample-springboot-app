@@ -1,0 +1,56 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+# Java application deployment pipeline
+# Build pipeline
+# Build and package the Java application
+
+trigger:
+  - main
+
+jobs:
+  - job: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - task: Maven@3
+        inputs:
+          mavenPomFile: 'pom.xml'
+          mavenOptions: '-Xmx3072m'
+          goals: 'package'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathtoPublish: 'target/*.war'
+          artifactName: 'webapp'
+
+# Release pipeline
+# Deploy the Java application to an nginx server
+
+  - deployment: Deploy
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: 'nginx'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: DownloadBuildArtifacts@0
+              inputs:
+                buildType: 'current'
+                downloadType: 'single'
+                artifactName: 'webapp'
+                downloadPath: '$(System.ArtifactsDirectory)'
+            - task: Bash@3
+              inputs:
+                targetType: 'inline'
+                script: |
+                  # Copy the deployable package to the nginx server
+                  scp target/*.war user@server:/path/to/webapp
+
+                  # Install any necessary dependencies on the nginx server
+                  ssh user@server "apt-get install -y openjdk-11-jdk"
+
+                  # Restart the nginx server
+                  ssh user@server "systemctl restart nginx"
