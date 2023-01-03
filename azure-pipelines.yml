@@ -27,16 +27,14 @@ steps:
     sshEndpoint: 'nginx-dev-con'
     sourceFolder: '$(Agent.BuildDirectory)'
     contents: '**/*.jar'
-    targetFolder: '/opt/tomcat/webapps/'
+    targetFolder: '/var/www/html'
     readyTimeout: '20000'
     flattenFolders: true
 
 
 - task: SSH@0
   inputs:
-    sshEndpoint: 'nginx-dev-con'
+    sshEndpoint: 'dev-tv-web-admin'
     runOptions: 'commands'
-    commands: |
-      /opt/tomcat/bin/shutdown.sh
-      /opt/tomcat/bin/startup.sh
+    commands: 'systemctl restart nginx'
     readyTimeout: '20000'
