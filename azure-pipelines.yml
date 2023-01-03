@@ -44,9 +44,9 @@ steps:
     readyTimeout: '20000'
     flattenFolders: true
 
-- task: SSH@0
-  inputs:
-    sshEndpoint: 'dev-tv-web-admin'
-    runOptions: 'inline'
-    inline: 'systemctl restart nginx'
-    readyTimeout: '20000'
+# - task: SSH@0
+#   inputs:
+#     sshEndpoint: 'dev-tv-web-admin'
+#     runOptions: 'inline'
+#     inline: 'systemctl restart nginx'
+#     readyTimeout: '20000'
