@@ -48,5 +48,5 @@ steps:
   inputs:
     sshEndpoint: 'dev-tv-web-admin'
     runOptions: 'commands'
-    commands: 'systemctl restart nginx'
+    commands: 'sudo systemctl restart nginx'
     readyTimeout: '20000'
