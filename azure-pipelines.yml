@@ -44,31 +44,31 @@ steps:
     readyTimeout: '20000'
     flattenFolders: true
 
-- task: Bash@3
-  inputs:
-          targetType: 'inline'
-          script: |
-            cat > /etc/nginx/conf.d/java-app.conf <<EOF
-            server {
-                listen 80;
-                server_name example.com;
+# - task: Bash@3
+#   inputs:
+#           targetType: 'inline'
+#           script: |
+#             cat > /etc/nginx/conf.d/java-app.conf <<EOF
+#             server {
+#                 listen 80;
+#                 server_name example.com;
                 
-                location / {
-                    proxy_pass http://localhost:8080;
-                    proxy_set_header Host $host;
-                    proxy_set_header X-Real-IP $remote_addr;
-                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                    proxy_set_header X-Forwarded-Proto $scheme;
-                }
-            }
-            EOF
+#                 location / {
+#                     proxy_pass http://localhost:8080;
+#                     proxy_set_header Host $host;
+#                     proxy_set_header X-Real-IP $remote_addr;
+#                     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+#                     proxy_set_header X-Forwarded-Proto $scheme;
+#                 }
+#             }
+#             EOF
       
-      # Restart the nginx service to pick up the new application
-- task: Bash@3
-  inputs:
-          targetType: 'inline'
-          script: |
-            systemctl restart nginx
+#       # Restart the nginx service to pick up the new application
+# - task: Bash@3
+#   inputs:
+#           targetType: 'inline'
+#           script: |
+#             systemctl restart nginx
 
 # - task: SSH@0
 #   inputs:
